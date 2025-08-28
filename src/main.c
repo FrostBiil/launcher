@@ -1,26 +1,15 @@
 #include <gtk/gtk.h>
+#include "ui/window.h"
 
-static void
-activate (GtkApplication *app,
-          gpointer        user_data)
-{
-  GtkWidget *window;
-
-  window = gtk_application_window_new (app);
-  gtk_window_set_title (GTK_WINDOW (window), "Window");
-  gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
-  gtk_window_present (GTK_WINDOW (window));
+static void on_activate(GtkApplication *app, gpointer user_data) {
+  GtkWidget *win = window_new(app);  // delegate all UI creation
+  gtk_window_present(GTK_WINDOW(win));
 }
 
-int main (int argc, char **argv)
-{
-  GtkApplication *app;
-  int status;
-
-  app = gtk_application_new ("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
-  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-  status = g_application_run (G_APPLICATION (app), argc, argv);
-  g_object_unref (app);
-
-  return status;
+int main(int argc, char **argv) {
+  GtkApplication *app = gtk_application_new("org.rly.launcher", G_APPLICATION_DEFAULT_FLAGS);
+  g_signal_connect(app, "activate", G_CALLBACK(on_activate), NULL);
+  int code = g_application_run(G_APPLICATION(app), argc, argv);
+  g_object_unref(app);
+  return code;
 }
