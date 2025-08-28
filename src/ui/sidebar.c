@@ -1,4 +1,5 @@
 #include "sidebar.h"
+#include "../app/catalog.h"
 
 GtkWidget* sidebar_new(void) {
   GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 12);
@@ -9,12 +10,13 @@ GtkWidget* sidebar_new(void) {
   gtk_box_append(GTK_BOX(box), logo);
 
   GtkWidget *list = gtk_list_box_new();
-  for (int i = 0; i < 4; ++i) {
-    char buf[32];
-    g_snprintf(buf, sizeof(buf), "Game %c", 'A' + i);
-    gtk_list_box_append(GTK_LIST_BOX(list), gtk_label_new(buf));
-  }
-  gtk_box_append(GTK_BOX(box), list);
 
+  size_t count;
+  const Game *games = catalog_get_all(&count);
+  for (size_t i = 0; i < count; i++) {
+    gtk_list_box_append(GTK_LIST_BOX(list), gtk_label_new(games[i].name));
+  }
+
+  gtk_box_append(GTK_BOX(box), list);
   return box;
 }
