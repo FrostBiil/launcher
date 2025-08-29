@@ -7,5 +7,6 @@ typedef struct {
   const char *exec;    // path to exe
   const char *args;    // launch args
   const char *workdir; // working directory
+  const char *icon;
   bool enabled;        // show/launchable
 } Game;
